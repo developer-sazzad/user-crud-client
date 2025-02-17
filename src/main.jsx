@@ -15,7 +15,8 @@ const router = createBrowserRouter([
   },
   {
     path: '/users',
-    element: <UserList></UserList>
+    element: <UserList></UserList>,
+    loader: () => fetch('http://localhost:5000/users')
   }
 ]);
 createRoot(document.getElementById('root')).render(
