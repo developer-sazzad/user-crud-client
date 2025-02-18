@@ -1,6 +1,30 @@
+import { useLoaderData } from "react-router-dom";
 import Header from "./Header";
+import { useState } from "react";
 
 const UserList = () => {
+    const userDataList = useLoaderData();
+    const [users, setUser] = useState(userDataList);
+
+    const handleDelete = (_id) => {
+        console.log(_id)
+
+        fetch(`http://localhost:5000/users/${_id}`, {
+            method: 'DELETE',
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.deletedCount === 0) {
+                    alert('User Deleted Successfully.')
+                    const remaining = users.filter(user => user._id !== _id);
+                    setUser(remaining);
+                } else {
+                    alert('Sorry............... cannot delete user.');
+                }
+            })
+    };
+   
     return (
         <div>
             <Header></Header>
@@ -14,31 +38,23 @@ const UserList = () => {
                                 <th>Id</th>
                                 <th>Name</th>
                                 <th>Job</th>
-                                <th>Delete</th>
+                                <th>CRUD</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {/* row 1 */}
-                            <tr>
-                                <th>1</th>
-                                <td>Cy Ganderton</td>
-                                <td>Quality Control Specialist</td>
-                                <td>Blue</td>
-                            </tr>
-                            {/* row 2 */}
-                            <tr className="hover">
-                                <th>2</th>
-                                <td>Hart Hagerty</td>
-                                <td>Desktop Support Technician</td>
-                                <td>Purple</td>
-                            </tr>
-                            {/* row 3 */}
-                            <tr>
-                                <th>3</th>
-                                <td>Brice Swyre</td>
-                                <td>Tax Accountant</td>
-                                <td>Red</td>
-                            </tr>
+                            {
+                                users.map(usersDetails => <tr key={usersDetails._id}>
+                                    <td>
+                                        {usersDetails._id}
+                                    </td>
+                                    <td>{usersDetails.name}</td>
+                                    <td>{usersDetails.email}</td>
+                                    <td>
+                                        <button className="btn"
+                                            onClick={() => handleDelete(usersDetails._id)}>Delete</button>
+                                    </td>
+                                </tr>)
+                            }
                         </tbody>
                     </table>
                 </div>
