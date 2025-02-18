@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import Header from "./Header";
 import { useState } from "react";
 
@@ -36,8 +36,8 @@ const UserList = () => {
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Name</th>
-                                <th>Job</th>
+                                <th>User Name</th>
+                                <th>User Email </th>
                                 <th>CRUD</th>
                             </tr>
                         </thead>
@@ -50,6 +50,9 @@ const UserList = () => {
                                     <td>{usersDetails.name}</td>
                                     <td>{usersDetails.email}</td>
                                     <td>
+                                        <Link to={`/update/${usersDetails._id}`}>
+                                            <button className="btn mr-5">Update</button>
+                                        </Link>
                                         <button className="btn"
                                             onClick={() => handleDelete(usersDetails._id)}>Delete</button>
                                     </td>
